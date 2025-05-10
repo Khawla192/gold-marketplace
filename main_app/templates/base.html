@@ -11,7 +11,6 @@
     <title>Gold Marketplace</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="shortcut icon" type="image/png" href="{% static 'images/gold-stock.PNG' %}" />
-    <!-- <script defer src="{% static 'js/' %}"></script> -->
     {% block head %}
     {% endblock %}
 </head>
@@ -25,10 +24,23 @@
         </div>
         <nav>
             <ul>
-                <li><a href="/stores">All Markets</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'store-index' %}">All Markets</a></li>
+                <li><a href="{% url 'piece-index' %}">All Accessories</a></li>
+                <li><a href="{% url 'store-create' %}">Add a Market</a></li>
+                <li><a href="{% url 'piece-create' %}">Add an Accessory</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li>
+                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                </li>
+                {% else %}
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'home' %}">Login</a></li>
                 <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

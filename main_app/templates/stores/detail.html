@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/stores/store-detail.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <h1>{{ store.name }}</h1>
+</section>
+
+<section class="store-detail">
+  <div class="card">
+    <div class="card-content">
+      <div class="store-header">
+        
+        <div class="store-info">
+          <h2 class="card-title">{{ store.name }}</h2>
+          <p class="store-description">{{ store.description }}</p>
+          <p><strong>Phone:</strong> {{ store.phone_number }}</p>
+          {% if store.links %}
+            <p><strong>Links:</strong> 
+              {% for link in store.links.splitlines %}
+                <a href="{{ link }}" target="_blank">{{ link }}</a><br>
+              {% endfor %}
+            </p>
+          {% endif %}
+        </div>
+
+        {% if request.user == store.user %}
+        <div class="store-actions">
+          <a href="{% url 'store-update' store.id %}" class="btn warn">Edit Store</a>
+          <a href="{% url 'store-delete' store.id %}" class="btn danger">Delete Store</a>
+        </div>
+        {% endif %}
+        
+      </div>
+
+      <div class="pieces-section">
+        <div class="section-header">
+          <h3>Available Pieces</h3>
+          {% if request.user == store.user %}
+            <a href="{% url 'piece-create' %}" class="btn primary">Add Piece</a>
+          {% endif %}
+        </div>
+
+        {% if pieces %}
+          <div class="pieces-container">
+            {% for piece in pieces %}
+            <div class="piece-card">
+              <a href="{% url 'piece-detail' piece.id %}">
+                <div class="card-content">
+                  <h4>{{ piece.name }}</h4>
+                  <p>{{ piece.karat }}K Gold</p>
+                  <p>{{ piece.grams }} grams</p>
+                  {% if request.user == store.user %}
+                    <div class="piece-actions">
+                      <a href="{% url 'piece-update' piece.id %}" class="btn warn">Edit</a>
+                      <a href="{% url 'piece-delete' piece.id %}" class="btn danger">Delete</a>
+                    </div>
+                  {% endif %}
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-pieces">No pieces available for this store yet.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

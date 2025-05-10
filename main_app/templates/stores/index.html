@@ -12,26 +12,20 @@
 </section>
 
 <section class="card-container">
-  {% for store in stores %}
-  <div class="card">
-    <div class="card-content">
-      <div class="card-img-container">
-        <img src="{% static 'images/alshehabi.jpeg' %}" alt="{{ store.name }}" />
-      </div>
-      <h2 class="card-title">{{ store.name }}</h2>
-      <p>{{ store.description }}</p>
-      <p><strong>Phone:</strong> {{ store.phone_number }}</p>
-      <p>
-        <strong>Links:</strong>
-      <ul>
-        {% for link in store.links %}
-        <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
-        {% endfor %}
-      </ul>
-      </p>
+  {% if stores %}
+    {% for store in stores %}
+    <div class="card">
+      <a href="{% url 'store-detail' store.id %}">
+        <div class="card-content">
+          <h2 class="card-title">{{ store.name }}</h2>
+          <p class="card-description">{{ store.description }}</p>
+        </div>
+      </a>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    <p class="no-stores">No stores available yet.</p>
+  {% endif %}
 </section>
 
 {% endblock %}
