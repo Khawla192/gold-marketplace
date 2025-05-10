@@ -1,4 +1,4 @@
-# Django Jewelry Store Platform
+# Django Gold MarketPlace Platform
 
 ## Description 
 
